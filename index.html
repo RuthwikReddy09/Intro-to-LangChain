@@ -1,1 +1,163 @@
-<h1> An Introduction to LangChain and Its Core Concepts: </h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>An Introduction to LangChain and Its Core Concepts</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>An Introduction to LangChain and Its Core Concepts</h1>
+    </header>
+    <section>
+        <p>If you are someone who is interested in building AI applications, you must have come across the word <strong>“LangChain”</strong>.</p>
+        <p>LangChain is a combination of two words:</p>
+        <ul>
+            <li><strong>lang</strong> - language</li>
+            <li><strong>chain</strong> - chaining</li>
+        </ul>
+        <p>Let us understand what this means in simple terms.</p>
+        <p><strong>LangChain</strong> is an Open-source framework for developing applications using language models.</p>
+    </section>
+
+    <section>
+        <h2>Need for LangChain</h2>
+        <p>Most of the LLM’s are trained on publicly available data. Is it possible to train these LLM’s by using our own data?</p>
+        <ul>
+            <li>Yes, It is possible with the help of LangChain.</li>
+            <li>LLMs + Your own data.</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>Important Concepts in LangChain</h2>
+        <h3>Prompt Template</h3>
+        <p>A prompt is a set of instructions provided by the user to the model. Prompt template is a template which consists of predefined prompts for language models.</p>
+        <pre><code class="python">
+from langchain.prompts import PromptTemplate
+
+# Define the prompt template with placeholders
+template = "Hello, {name}.I hope you're feeling {mood}."
+
+# Initialize the prompt template
+prompt = PromptTemplate(input_variables=["name", "mood"], template=template)
+
+# Generate the final prompt by providing values for the placeholders
+final_prompt = prompt.format(name="Alice", mood="great")
+
+print(final_prompt)
+        </code></pre>
+
+        <h3>Document Loaders</h3>
+        <p>Document Loaders can be used to load data from different sources. A document is a piece of text and associated metadata.</p>
+        <ul>
+            <li>Text Files (<code>TextLoader</code>)</li>
+            <li>PDF Files (<code>PyPDFLoader</code>)</li>
+            <li>HTML Files (<code>WebBaseLoader</code> or <code>BeautifulSoupHTMLLoader</code>)</li>
+            <li>CSV Files (<code>CSVLoader</code>)</li>
+            <li>JSON Files (<code>JSONLoader</code>)</li>
+        </ul>
+
+        <h4>Example for Text Loader:</h4>
+        <pre><code class="python">
+from langchain.document_loaders import TextLoader
+
+loader = TextLoader("sample.txt")
+documents = loader.load()
+
+print(documents)  # Prints the list of Document objects
+        </code></pre>
+
+        <h4>Example for PDF Loader:</h4>
+        <pre><code class="python">
+from langchain.document_loaders import PyPDFLoader
+
+loader = PyPDFLoader("sample.pdf")
+documents = loader.load()
+
+print(documents)  # List of Document objects with PDF content
+        </code></pre>
+
+        <h4>Example for HTML Loader:</h4>
+        <pre><code class="python">
+from langchain.document_loaders import BeautifulSoupHTMLLoader
+
+loader = BeautifulSoupHTMLLoader("https://example.com")
+documents = loader.load()
+
+print(documents)  # Extracted text from the HTML pages
+        </code></pre>
+
+        <h4>Example for CSV Loader:</h4>
+        <pre><code class="python">
+from langchain.document_loaders import CSVLoader
+
+loader = CSVLoader("data.csv")
+documents = loader.load()
+
+print(documents)  # Loaded rows as Document objects
+        </code></pre>
+
+        <h4>Example for JSON Loader:</h4>
+        <pre><code class="python">
+from langchain.document_loaders import JSONLoader
+
+loader = JSONLoader("data.json")
+documents = loader.load()
+
+print(documents)  # Loaded data as Document objects
+        </code></pre>
+    </section>
+
+    <section>
+        <h2>Tools</h2>
+        <p>The component that allows LLM to connect with external services is called a Tool.</p>
+        <h3>Chains</h3>
+        <p>A chain in LangChain is a sequence of interconnected components that process the user's input step-by-step. Each component in the chain takes the output from the previous one as input. This creates a pipeline of processing steps.</p>
+
+        <pre><code class="python">
+# Example of building a chain
+chain = prompt | llm | output_parser
+        </code></pre>
+
+        <h4>LECL (LangChain Expression Language)</h4>
+        <p>LECL is a high-level abstraction that simplifies constructing chains using a simple and human-readable format.</p>
+        <pre><code class="python">
+chain = prompt | model | output_parser
+        </code></pre>
+
+        <h3>Agents</h3>
+        <p>The core idea of agents is to use a language model to choose a sequence of actions to take. In chains, a sequence of actions is hardcoded (in code). In agents, a language model is used as a reasoning engine to determine which actions to take and in which order.</p>
+    </section>
+
+    <section>
+        <h2>Vector Database</h2>
+        <h3>Splitter</h3>
+        <p>Text can be split into smaller chunks that fit within the model's context window.</p>
+        <ul>
+            <li>Types of text splitters: Recursive, HTML, Markdown, Code, Tokens</li>
+        </ul>
+
+        <h3>Retriever</h3>
+        <p>Retrievers are used to return documents based on a query. They don’t store documents themselves but interact with vector stores.</p>
+    </section>
+
+    <section>
+        <h2>Output Parsers</h2>
+        <p>Output Parsers help convert the responses generated by Language Models into a more usable form. These responses are often unstructured text, which parsers format into structured formats such as JSON or lists.</p>
+
+        <h3>Types of Output Parsers</h3>
+        <ul>
+            <li><strong>String Output Parser:</strong> Returns raw text</li>
+            <li><strong>Comma-Separated List Parser:</strong> Converts comma-separated strings into Python lists</li>
+            <li><strong>JSON Output Parser:</strong> Extracts specific keys from a JSON response</li>
+            <li><strong>Regex Output Parser:</strong> Uses regex to extract structured data</li>
+        </ul>
+    </section>
+    
+    <footer>
+        <p>&copy; 2025 LangChain Blog - Ruthwik Doodipala</p>
+    </footer>
+</body>
+</html>
